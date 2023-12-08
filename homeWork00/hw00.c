@@ -31,8 +31,6 @@ int main ( int argc, char * argv []) {
         }
 
     }
-    else printf("%s\n", arr[10]);
-
-   // system ( "pause" );
+    else printf("%s", arr[10]);
     return 0;
 }
