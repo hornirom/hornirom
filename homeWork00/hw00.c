@@ -20,20 +20,19 @@ int main ( int argc, char * argv []) {
     if (scanf("%f", &number) == 1) {
         if (int(number) >= 0 and int(number) <= 8) {
             if (number != 0 and number != 1 and number != 2 and number != 3 and number != 4 and number != 5 and number != 6 and number != 7 and number != 8) {
-                printf("%s\n", arr[11]);
+                printf("%s", arr[11]);
             }
             else {
-                printf("%s\n", arr[int(number)]);
+                printf("%s", arr[int(number)]);
             }
         }
         else if (int(number) > 8 or int(number) < 0) {
             printf(arr[9], int(number));
-            printf("\n");
         }
 
     }
     else printf("%s\n", arr[10]);
 
-    //system ( "pause" );
+   // system ( "pause" );
     return 0;
 }
