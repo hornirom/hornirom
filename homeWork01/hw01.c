@@ -101,11 +101,18 @@ int time(char x[], int *hours, int *minutes) {
     return 1;
 }
 
-int prestup(int prih, int prim, int odh, int odm) {
+int prestup(int prih, int prim,int pri1h, int pri1m, int odh, int odm) {
 
     int k = 0;
+
     //printf("%d %d\n%d %d\n", prih, prim, odh, odm);
-    if ((prih < odh && prih+3 >= odh) || (prih == odh && prim+4 < odm) || (prih > 20 && odh < 3 && ((24 + odh)*60 + odm)-(prih*60 + prim)<=180)) k = 1;
+    if ((prih < odh && (odh*60 + odm)-(prih*60 + prim) >= 5 && (pri1h*60 + pri1m)-(prih*60 + prim) <= 180)
+    || (prih == odh && prim+5 <= odm)
+    || (prih > odh && prih > pri1h && ((24 + odh)*60 + odm)-(prih*60 + prim) >= 5 && ((24 + pri1h)*60 + pri1m)-(prih*60 + prim) <= 180)
+    || (prih > odh && prih < pri1h && ((24 + odh)*60 + odm)-(prih*60 + prim) >= 5 && (pri1h*60 + pri1m)-(prih*60 + prim) <= 180)
+    || (prih > odh && prih == pri1h && ((24 + odh)*60 + odm)-(prih*60 + prim) >= 5)
+    || (prih > 20 && pri1h < 3 && ((24 + pri1h)*60 + pri1m)-(prih*60 + prim) <= 180 && ((24 + odh)*60 + odm)-(prih*60 + prim) >= 5)
+    || (prih > 20 && odh < 3 && ((24 + odh)*60 + odm)-(prih*60 + prim) >= 5)) k = 1;
     return k;
 
 }
@@ -130,27 +137,27 @@ int main() {
     printf("Cas odjezdu vlaku C:\n");
     if (!time(odC, &odCh, &odCmin)) return 0;
 
-    if (prestup(priAh, priAmin, odBh, odBmin) && prestup(priAh, priAmin, odCh, odCmin))
+    if (prestup(priAh, priAmin,priBh, priBmin, odBh, odBmin) && prestup(priAh, priAmin, priCh, priCmin, odCh, odCmin))
         printf("Z vlaku A lze prestoupit na vlaky B a C.\n");
-    else if (prestup(priAh, priAmin, odBh, odBmin))
+    else if (prestup(priAh, priAmin,priBh, priBmin, odBh, odBmin))
         printf("Z vlaku A lze prestoupit na vlak B.\n");
-    else if (prestup(priAh, priAmin, odCh, odCmin))
+    else if (prestup(priAh, priAmin,priCh, priCmin, odCh, odCmin))
         printf("Z vlaku A lze prestoupit na vlak C.\n");
     else printf("Z vlaku A nelze prestupovat.\n");
 
-    if (prestup(priBh, priBmin, odAh, odAmin) && prestup(priBh, priBmin, odCh, odCmin))
+    if (prestup(priBh, priBmin,priAh, priAmin, odAh, odAmin) && prestup(priBh, priBmin, priCh, priCmin, odCh, odCmin))
         printf("Z vlaku B lze prestoupit na vlaky A a C.\n");
-    else if (prestup(priBh, priBmin, odAh, odAmin))
+    else if (prestup(priBh, priBmin, priAh, priAmin, odAh, odAmin))
         printf("Z vlaku B lze prestoupit na vlak A.\n");
-    else if (prestup(priBh, priBmin, odCh, odCmin))
+    else if (prestup(priBh, priBmin, priCh, priCmin, odCh, odCmin))
         printf("Z vlaku B lze prestoupit na vlak C.\n");
     else printf("Z vlaku B nelze prestupovat.\n");
 
-    if (prestup(priCh, priCmin, odAh, odAmin) && prestup(priCh, priCmin, odBh, odBmin))
+    if (prestup(priCh, priCmin, priAh, priAmin, odAh, odAmin) && prestup(priCh, priCmin, priBh, priBmin, odBh, odBmin))
         printf("Z vlaku C lze prestoupit na vlaky A a B.\n");
-    else if (prestup(priCh, priCmin, odAh, odAmin))
+    else if (prestup(priCh, priCmin, priAh, priAmin, odAh, odAmin))
         printf("Z vlaku C lze prestoupit na vlak A.\n");
-    else if (prestup(priCh, priCmin, odBh, odBmin))
+    else if (prestup(priCh, priCmin, priBh, priBmin, odBh, odBmin))
         printf("Z vlaku C lze prestoupit na vlak B.\n");
     else printf("Z vlaku C nelze prestupovat.\n");
 
